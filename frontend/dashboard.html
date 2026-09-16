@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — LifeLine Connect</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><span class="dot"></span> LifeLine Connect</a>
+    <ul class="nav-links"></ul>
+    <div class="nav-actions"></div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <strong id="sidebarName">—</strong>
+      <span id="sidebarRole">—</span>
+    </div>
+    <nav>
+      <a href="#overview" class="nav-tab active" data-tab="overview">Overview</a>
+      <a href="#donor-requests" class="nav-tab" data-tab="donor-requests" data-role="donor">Nearby requests</a>
+      <a href="#my-donations" class="nav-tab" data-tab="my-donations" data-role="donor">My donations</a>
+      <a href="#post-request" class="nav-tab" data-tab="post-request" data-role="requester">Post a request</a>
+      <a href="#my-requests" class="nav-tab" data-tab="my-requests" data-role="requester">My requests</a>
+      <a href="#leaderboard-tab" class="nav-tab" data-tab="leaderboard-tab">Leaderboard</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <section id="overview" class="tab-panel">
+      <div class="page-head">
+        <div>
+          <h1>Welcome back, <span id="welcomeName">—</span></h1>
+          <p style="margin:0;">Here's where things stand right now.</p>
+        </div>
+      </div>
+
+      <div class="stat-strip" id="donorStatStrip" data-role="donor">
+        <div class="stat-box"><div class="num" id="statPoints">0</div><div class="label">Points earned</div></div>
+        <div class="stat-box"><div class="num" id="statBloodGroup">—</div><div class="label">Blood group</div></div>
+        <div class="stat-box"><div class="num" id="statAvailability">—</div><div class="label">Availability</div></div>
+        <div class="stat-box"><div class="num" id="statVerified">—</div><div class="label">Verification</div></div>
+      </div>
+
+      <div class="stat-strip" id="requesterStatStrip" data-role="requester">
+        <div class="stat-box"><div class="num" id="statOpenCount">0</div><div class="label">Open requests</div></div>
+        <div class="stat-box"><div class="num" id="statFulfilledCount">0</div><div class="label">Fulfilled</div></div>
+      </div>
+
+      <div id="availabilityCard" data-role="donor" class="feature-visual" style="justify-content:space-between; flex-direction:row; padding:24px;">
+        <div>
+          <strong>Available to donate</strong>
+          <p style="margin:4px 0 0;">Turn this off if you've recently donated or can't be contacted right now.</p>
+        </div>
+        <button class="btn btn-teal" id="toggleAvailabilityBtn">Toggle</button>
+      </div>
+    </section>
+
+    <section id="donor-requests" class="tab-panel" style="display:none;" data-role="donor">
+      <div class="page-head"><div><h1>Requests matching your blood group</h1></div></div>
+      <div id="matchingRequestsList"></div>
+    </section>
+
+    <section id="my-donations" class="tab-panel" style="display:none;" data-role="donor">
+      <div class="page-head"><div><h1>Your donation history</h1></div></div>
+      <div id="myDonationsList"></div>
+    </section>
+
+    <section id="post-request" class="tab-panel" style="display:none;" data-role="requester">
+      <div class="page-head"><div><h1>Post an emergency request</h1></div></div>
+      <div class="form-error" id="requestFormError"></div>
+      <div class="form-success" id="requestFormSuccess"></div>
+      <form id="requestForm" style="max-width:560px;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="patientName">Patient name</label>
+            <input type="text" id="patientName" required />
+          </div>
+          <div class="form-group">
+            <label for="reqBloodGroup">Blood group needed</label>
+            <select id="reqBloodGroup" required>
+              <option value="">Select</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option>
+              <option>O+</option><option>O-</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="unitsNeeded">Units needed</label>
+            <input type="number" id="unitsNeeded" min="1" value="1" required />
+          </div>
+          <div class="form-group">
+            <label for="urgency">Urgency</label>
+            <select id="urgency">
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="hospitalName">Hospital name</label>
+          <input type="text" id="hospitalName" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reqCity">City</label>
+            <input type="text" id="reqCity" required />
+          </div>
+          <div class="form-group">
+            <label for="reqArea">Area (optional)</label>
+            <input type="text" id="reqArea" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="requestSubmitBtn">Post request</button>
+      </form>
+    </section>
+
+    <section id="my-requests" class="tab-panel" style="display:none;" data-role="requester">
+      <div class="page-head"><div><h1>My requests</h1></div></div>
+      <div id="myRequestsList"></div>
+    </section>
+
+    <section id="leaderboard-tab" class="tab-panel" style="display:none;">
+      <div class="page-head"><div><h1>Top donors</h1></div></div>
+      <div class="leaderboard" id="dashboardLeaderboard"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

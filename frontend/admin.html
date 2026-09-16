@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — LifeLine Connect</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><span class="dot"></span> LifeLine Connect</a>
+    <ul class="nav-links"></ul>
+    <div class="nav-actions"></div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <strong id="sidebarName">—</strong>
+      <span>Administrator</span>
+    </div>
+    <nav>
+      <a href="#a-overview" class="nav-tab active" data-tab="a-overview">Overview</a>
+      <a href="#a-donors" class="nav-tab" data-tab="a-donors">Donors</a>
+      <a href="#a-requests" class="nav-tab" data-tab="a-requests">All requests</a>
+      <a href="#a-events" class="nav-tab" data-tab="a-events">Events</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <section id="a-overview" class="tab-panel">
+      <div class="page-head"><div><h1>Platform overview</h1></div></div>
+      <div class="stat-strip">
+        <div class="stat-box"><div class="num" id="statTotalDonors">0</div><div class="label">Total donors</div></div>
+        <div class="stat-box"><div class="num" id="statVerifiedDonors">0</div><div class="label">Verified donors</div></div>
+        <div class="stat-box"><div class="num" id="statOpenReq">0</div><div class="label">Open requests</div></div>
+        <div class="stat-box"><div class="num" id="statFulfilledReq">0</div><div class="label">Fulfilled requests</div></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:8px;">
+        <div class="feature-visual" style="flex-direction:column; align-items:stretch; padding:24px;">
+          <h3 style="font-size:1.1rem; margin-bottom:16px;">Requests by blood group</h3>
+          <canvas id="bloodGroupChart" height="220"></canvas>
+        </div>
+        <div class="feature-visual" style="flex-direction:column; align-items:stretch; padding:24px;">
+          <h3 style="font-size:1.1rem; margin-bottom:16px;">Completed donations by month</h3>
+          <canvas id="donationsChart" height="220"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section id="a-donors" class="tab-panel" style="display:none;">
+      <div class="page-head"><div><h1>Donors</h1></div></div>
+      <div id="adminDonorsList"></div>
+    </section>
+
+    <section id="a-requests" class="tab-panel" style="display:none;">
+      <div class="page-head"><div><h1>All requests</h1></div></div>
+      <div id="adminRequestsList"></div>
+    </section>
+
+    <section id="a-events" class="tab-panel" style="display:none;">
+      <div class="page-head"><div><h1>Events</h1></div></div>
+
+      <div class="form-error" id="eventFormError"></div>
+      <div class="form-success" id="eventFormSuccess"></div>
+      <form id="eventForm" style="max-width:520px; margin-bottom:40px;">
+        <div class="form-group">
+          <label for="evTitle">Event title</label>
+          <input type="text" id="evTitle" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="evDate">Date</label>
+            <input type="date" id="evDate" required />
+          </div>
+          <div class="form-group">
+            <label for="evLocation">Location</label>
+            <input type="text" id="evLocation" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="evOrganizer">Organizer name</label>
+          <input type="text" id="evOrganizer" required />
+        </div>
+        <div class="form-group">
+          <label for="evDescription">Description (optional)</label>
+          <textarea id="evDescription" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="eventSubmitBtn">Add event</button>
+      </form>
+
+      <div id="adminEventsList"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

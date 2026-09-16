@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Join — LifeLine Connect</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><span class="dot"></span> LifeLine Connect</a>
+    <ul class="nav-links"></ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-secondary">Log in</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-wrap">
+  <h1>Create your account</h1>
+  <p>Join as a donor to get matched with nearby requests, or as a requester to post an emergency need.</p>
+
+  <div class="role-toggle">
+    <div class="role-option active" data-role="donor">I can donate</div>
+    <div class="role-option" data-role="requester">I need blood</div>
+  </div>
+
+  <div class="form-error" id="formError"></div>
+
+  <form id="registerForm">
+    <div class="form-group">
+      <label for="name">Full name</label>
+      <input type="text" id="name" required />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" required />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" minlength="6" required />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" required />
+      </div>
+      <div class="form-group" id="bloodGroupGroup">
+        <label for="bloodGroup">Blood group</label>
+        <select id="bloodGroup" required>
+          <option value="">Select</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option>
+          <option>O+</option><option>O-</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" required />
+      </div>
+      <div class="form-group">
+        <label for="area">Area (optional)</label>
+        <input type="text" id="area" />
+      </div>
+    </div>
+    <p class="form-hint">We only use your location to match you with nearby requests — it's never shown publicly.</p>
+    <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Create account</button>
+  </form>
+
+  <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

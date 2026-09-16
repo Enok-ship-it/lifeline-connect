@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LifeLine Connect — Emergency Blood Donor Network</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><span class="dot"></span> LifeLine Connect</a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="search.html">Find donors</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#leaderboard">Top donors</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-secondary">Log in</a>
+      <a href="register.html" class="btn btn-primary">Join now</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <div class="hero-eyebrow">🩸 Live emergency network</div>
+      <h1>Someone near you needs blood right now.</h1>
+      <p class="hero-sub">
+        LifeLine Connect matches verified donors to emergency requests by blood
+        group and distance — in minutes, not days. Register once, get notified
+        only when you can actually help.
+      </p>
+      <div class="hero-actions">
+        <a href="search.html" class="btn btn-primary">Find a donor now</a>
+        <a href="register.html?role=donor" class="btn btn-secondary">I can donate</a>
+      </div>
+      <p class="hero-note">Free to join. No hospital sign-off needed to register as a donor.</p>
+    </div>
+
+    <div class="hero-panel">
+      <svg class="pulse-wrap" viewBox="0 0 320 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="pulse-path" d="M0 45 H100 L115 15 L135 75 L150 45 L165 60 L180 45 H320" />
+      </svg>
+      <div class="hero-stat-number" id="heroDonorCount">0</div>
+      <div class="hero-stat-label">verified donors ready nearby</div>
+      <hr />
+      <div class="hero-mini-stats">
+        <div><strong id="heroRequestCount">0</strong><span>open requests today</span></div>
+        <div><strong id="heroCityCount">0</strong><span>cities covered</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="section-head">
+      <h2>Three steps between a donor and a saved life</h2>
+      <p>No paperwork, no waiting rooms until it actually matters.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Register your blood group</h3>
+        <p>Share your blood group, city and contact details once. It takes under two minutes.</p>
+      </div>
+      <div class="step">
+        <h3>Get matched automatically</h3>
+        <p>When someone nearby needs your blood group, we surface your profile — you're never spammed with irrelevant requests.</p>
+      </div>
+      <div class="step">
+        <h3>Donate and track your impact</h3>
+        <p>Confirm the donation and watch your donor profile grow — badges, points, and a place on the leaderboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="find-donors">
+  <div class="container">
+    <div class="feature-row">
+      <div class="feature-text">
+        <h3>Find the nearest match, not just any match</h3>
+        <p>
+          Every search ranks donors by real distance using their location, not
+          just which city they typed in. A requester in a hurry sees the
+          closest compatible donor first.
+        </p>
+        <a href="search.html" class="btn btn-teal" style="margin-top:8px;">Try the search</a>
+      </div>
+      <div class="feature-visual">
+        <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
+          <circle cx="90" cy="70" r="8" fill="#B91C3C"/>
+          <circle cx="90" cy="70" r="30" stroke="#B91C3C" stroke-width="1.5" opacity="0.4"/>
+          <circle cx="90" cy="70" r="55" stroke="#B91C3C" stroke-width="1.5" opacity="0.25"/>
+          <circle cx="55" cy="45" r="5" fill="#146356"/>
+          <circle cx="128" cy="95" r="5" fill="#146356"/>
+          <circle cx="120" cy="35" r="5" fill="#146356"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="feature-row reverse">
+      <div class="feature-text">
+        <h3>Compatibility handled for you</h3>
+        <p>
+          You don't need to remember who can donate to whom — the system
+          already knows an O- donor can help an AB+ patient, and applies
+          real compatibility rules to every search.
+        </p>
+      </div>
+      <div class="feature-visual">
+        <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
+          <path d="M90 20 C60 55 45 75 45 95 A45 45 0 1 0 135 95 C135 75 120 55 90 20Z" fill="#EDE4D8" stroke="#B91C3C" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="container">
+    <div class="impact-grid">
+      <div><div class="impact-number" id="impactDonors">0</div><div class="impact-label">Registered donors</div></div>
+      <div><div class="impact-number" id="impactRequests">0</div><div class="impact-label">Requests posted</div></div>
+      <div><div class="impact-number" id="impactFulfilled">0</div><div class="impact-label">Requests fulfilled</div></div>
+      <div><div class="impact-number" id="impactCities">0</div><div class="impact-label">Cities active</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="leaderboard">
+  <div class="container">
+    <div class="section-head">
+      <h2>This month's top donors</h2>
+      <p>Points are earned every time a pledge is confirmed as a completed donation.</p>
+    </div>
+    <div class="leaderboard" id="leaderboardList">
+      <!-- filled by home.js -->
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="events">
+  <div class="container">
+    <div class="section-head">
+      <h2>Upcoming donation camps</h2>
+      <p>Can't donate today? Show up at one of these instead.</p>
+    </div>
+    <div id="eventsList">
+      <!-- filled by home.js -->
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container">
+    <h2>Your blood type could be the one someone is searching for tonight.</h2>
+    <div class="hero-actions" style="margin-top:24px;">
+      <a href="register.html" class="btn btn-secondary">Register as a donor</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <span>LifeLine Connect — a student project for social good.</span>
+    <span>Built with Node.js, Express &amp; MongoDB.</span>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>
