@@ -18,8 +18,10 @@
   </div>
 </nav>
 
-<div class="auth-wrap">
-  <h1>Welcome back</h1>
+<div class="blob-bg" style="min-height: calc(100vh - 72px); display:flex; align-items:center;">
+  <div class="particles"></div>
+  <div class="auth-wrap glass-card tilt reveal">
+    <h1>Welcome back</h1>
   <p>Log in to view matches, respond to requests, or manage your dashboard.</p>
 
   <div class="form-error" id="formError"></div>
@@ -40,10 +42,12 @@
   <p class="form-hint" style="text-align:center; margin-top:16px;">
     Demo login (after running the seed script): rohan@example.com / password123
   </p>
+  </div>
 </div>
 
 <script src="js/api.js"></script>
 <script src="js/nav.js"></script>
+<script src="js/effects.js"></script>
 <script src="js/auth.js"></script>
 </body>
 </html>

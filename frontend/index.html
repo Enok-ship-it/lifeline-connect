@@ -25,11 +25,12 @@
   </div>
 </nav>
 
-<header class="hero">
+<header class="hero blob-bg">
+  <div class="particles"></div>
   <div class="container">
-    <div class="hero-copy">
+    <div class="hero-copy reveal">
       <div class="hero-eyebrow">🩸 Live emergency network</div>
-      <h1>Someone near you needs blood right now.</h1>
+      <h1>Someone near you needs <span class="gradient-text">blood right now.</span></h1>
       <p class="hero-sub">
         LifeLine Connect matches verified donors to emergency requests by blood
         group and distance — in minutes, not days. Register once, get notified
@@ -42,7 +43,7 @@
       <p class="hero-note">Free to join. No hospital sign-off needed to register as a donor.</p>
     </div>
 
-    <div class="hero-panel">
+    <div class="hero-panel glass-card tilt reveal">
       <svg class="pulse-wrap" viewBox="0 0 320 90" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path class="pulse-path" d="M0 45 H100 L115 15 L135 75 L150 45 L165 60 L180 45 H320" />
       </svg>
@@ -59,11 +60,11 @@
 
 <section class="section" id="how-it-works">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <h2>Three steps between a donor and a saved life</h2>
       <p>No paperwork, no waiting rooms until it actually matters.</p>
     </div>
-    <div class="steps">
+    <div class="steps reveal-stagger">
       <div class="step">
         <h3>Register your blood group</h3>
         <p>Share your blood group, city and contact details once. It takes under two minutes.</p>
@@ -82,7 +83,7 @@
 
 <section class="section section-alt" id="find-donors">
   <div class="container">
-    <div class="feature-row">
+    <div class="feature-row reveal">
       <div class="feature-text">
         <h3>Find the nearest match, not just any match</h3>
         <p>
@@ -92,7 +93,7 @@
         </p>
         <a href="search.html" class="btn btn-teal" style="margin-top:8px;">Try the search</a>
       </div>
-      <div class="feature-visual">
+      <div class="feature-visual tilt">
         <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
           <circle cx="90" cy="70" r="8" fill="#B91C3C"/>
           <circle cx="90" cy="70" r="30" stroke="#B91C3C" stroke-width="1.5" opacity="0.4"/>
@@ -104,7 +105,7 @@
       </div>
     </div>
 
-    <div class="feature-row reverse">
+    <div class="feature-row reverse reveal">
       <div class="feature-text">
         <h3>Compatibility handled for you</h3>
         <p>
@@ -113,7 +114,7 @@
           real compatibility rules to every search.
         </p>
       </div>
-      <div class="feature-visual">
+      <div class="feature-visual tilt">
         <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
           <path d="M90 20 C60 55 45 75 45 95 A45 45 0 1 0 135 95 C135 75 120 55 90 20Z" fill="#EDE4D8" stroke="#B91C3C" stroke-width="2"/>
         </svg>
@@ -124,7 +125,7 @@
 
 <section class="impact">
   <div class="container">
-    <div class="impact-grid">
+    <div class="impact-grid reveal-stagger">
       <div><div class="impact-number" id="impactDonors">0</div><div class="impact-label">Registered donors</div></div>
       <div><div class="impact-number" id="impactRequests">0</div><div class="impact-label">Requests posted</div></div>
       <div><div class="impact-number" id="impactFulfilled">0</div><div class="impact-label">Requests fulfilled</div></div>
@@ -135,11 +136,11 @@
 
 <section class="section" id="leaderboard">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <h2>This month's top donors</h2>
       <p>Points are earned every time a pledge is confirmed as a completed donation.</p>
     </div>
-    <div class="leaderboard" id="leaderboardList">
+    <div class="leaderboard reveal" id="leaderboardList">
       <!-- filled by home.js -->
     </div>
   </div>
@@ -147,18 +148,19 @@
 
 <section class="section section-alt" id="events">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <h2>Upcoming donation camps</h2>
       <p>Can't donate today? Show up at one of these instead.</p>
     </div>
-    <div id="eventsList">
+    <div id="eventsList" class="reveal">
       <!-- filled by home.js -->
     </div>
   </div>
 </section>
 
-<section class="cta-band">
-  <div class="container">
+<section class="cta-band blob-bg">
+  <div class="particles"></div>
+  <div class="container reveal">
     <h2>Your blood type could be the one someone is searching for tonight.</h2>
     <div class="hero-actions" style="margin-top:24px;">
       <a href="register.html" class="btn btn-secondary">Register as a donor</a>
@@ -175,6 +177,7 @@
 
 <script src="js/api.js"></script>
 <script src="js/nav.js"></script>
+<script src="js/effects.js"></script>
 <script src="js/home.js"></script>
 </body>
 </html>
