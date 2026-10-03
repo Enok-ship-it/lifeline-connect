@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>LifeLine Connect — Emergency Blood Donor Network</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 32'%3E%3Cpath d='M13 0C13 0 25 16.5 25 23C25 29 19.6 32 13 32C6.4 32 1 29 1 23C1 16.5 13 0 13 0Z' fill='%23B91C3C'/%3E%3C/svg%3E" />
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -44,8 +45,29 @@
     </div>
 
     <div class="hero-panel glass-card tilt reveal">
+      <div class="live-badge"><span class="live-dot"></span> LIVE MONITOR</div>
       <svg class="pulse-wrap" viewBox="0 0 320 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path class="pulse-path" d="M0 45 H100 L115 15 L135 75 L150 45 L165 60 L180 45 H320" />
+        <!-- ECG grid paper background -->
+        <g class="pulse-grid">
+          <line x1="0" y1="15" x2="320" y2="15" />
+          <line x1="0" y1="45" x2="320" y2="45" />
+          <line x1="0" y1="75" x2="320" y2="75" />
+          <line x1="40" y1="0" x2="40" y2="90" />
+          <line x1="80" y1="0" x2="80" y2="90" />
+          <line x1="120" y1="0" x2="120" y2="90" />
+          <line x1="160" y1="0" x2="160" y2="90" />
+          <line x1="200" y1="0" x2="200" y2="90" />
+          <line x1="240" y1="0" x2="240" y2="90" />
+          <line x1="280" y1="0" x2="280" y2="90" />
+        </g>
+        <!-- Two identical copies of the same waveform placed back-to-back;
+             the group below is continuously translated left by exactly one
+             copy's width, so copy #2 slides into copy #1's old position at
+             the exact moment copy #1 slides out - a seamless, infinite loop. -->
+        <g class="pulse-track">
+          <path class="pulse-path" d="M0 45 H100 L115 15 L135 75 L150 45 L165 60 L180 45 H320" />
+          <path class="pulse-path" d="M0 45 H100 L115 15 L135 75 L150 45 L165 60 L180 45 H320" transform="translate(320,0)" />
+        </g>
       </svg>
       <div class="hero-stat-number" id="heroDonorCount">0</div>
       <div class="hero-stat-label">verified donors ready nearby</div>
@@ -54,9 +76,29 @@
         <div><strong id="heroRequestCount">0</strong><span>open requests today</span></div>
         <div><strong id="heroCityCount">0</strong><span>cities covered</span></div>
       </div>
+      <div class="drop-badge" aria-hidden="true">
+        <svg width="26" height="32" viewBox="0 0 26 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 0C13 0 25 16.5 25 23C25 29 19.6 32 13 32C6.4 32 1 29 1 23C1 16.5 13 0 13 0Z" fill="url(#dropGrad)"/>
+          <defs>
+            <linearGradient id="dropGrad" x1="13" y1="0" x2="13" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF6B81"/>
+              <stop offset="1" stop-color="#8F1530"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
     </div>
   </div>
 </header>
+
+<div class="pulse-divider" aria-hidden="true">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <g class="pulse-divider-track">
+      <path d="M0 20 H480 L500 4 L530 36 L550 20 L570 28 L590 20 H1200" />
+      <path d="M0 20 H480 L500 4 L530 36 L550 20 L570 28 L590 20 H1200" transform="translate(1200,0)" />
+    </g>
+  </svg>
+</div>
 
 <section class="section" id="how-it-works">
   <div class="container">
