@@ -21,61 +21,34 @@ function streamCertificate(res, data) {
   doc.pipe(res);
 
   const pageWidth = doc.page.width;
+  const pageHeight = doc.page.height;
+  const inset = 26;
 
-  // Decorative border
-  doc
-    .lineWidth(3)
-    .strokeColor("#b91c3c")
-    .rect(24, 24, pageWidth - 48, doc.page.height - 48)
-    .stroke();
+  doc.rect(0, 0, pageWidth, pageHeight).fill("#f7f3ee");
+  doc.lineWidth(4).strokeColor("#b91c3c").rect(inset, inset, pageWidth - inset * 2, pageHeight - inset * 2).stroke();
+  doc.lineWidth(1).strokeColor("#146356").rect(inset + 10, inset + 10, pageWidth - (inset + 10) * 2, pageHeight - (inset + 10) * 2).stroke();
 
-  doc
-    .fontSize(12)
-    .fillColor("#146356")
-    .font("Helvetica-Bold")
-    .text("LIFELINE CONNECT", 0, 70, { align: "center" });
+  doc.font("Helvetica-Bold").fontSize(11).fillColor("#146356").text("LIFELINE CONNECT", 0, 66, { align: "center", characterSpacing: 2 });
+  doc.font("Helvetica-Bold").fontSize(30).fillColor("#201c1a").text("Certificate of Appreciation", 0, 96, { align: "center" });
+  doc.font("Helvetica").fontSize(13).fillColor("#55504b").text("Presented with gratitude to", 0, 153, { align: "center" });
 
-  doc
-    .fontSize(30)
-    .fillColor("#201c1a")
-    .font("Helvetica-Bold")
-    .text("Certificate of Appreciation", 0, 100, { align: "center" });
+  doc.font("Helvetica-Bold").fontSize(28).fillColor("#b91c3c").text(data.donorName, 85, 181, {
+    align: "center",
+    width: pageWidth - 170,
+  });
+  doc.lineWidth(1).strokeColor("#d8cfc2").moveTo(170, 222).lineTo(pageWidth - 170, 222).stroke();
 
-  doc
-    .fontSize(14)
-    .fillColor("#55504b")
-    .font("Helvetica")
-    .text("This certificate is proudly presented to", 0, 160, { align: "center" });
+  doc.font("Helvetica").fontSize(13).fillColor("#55504b").text(
+    `In recognition of a generous ${data.bloodGroup} blood donation made on ${data.dateDonated} at ${data.hospitalName}.`,
+    125,
+    245,
+    { align: "center", width: pageWidth - 250, lineGap: 5 }
+  );
+  doc.font("Helvetica-Bold").fontSize(12).fillColor("#146356").text("Your generosity helps keep emergency care moving.", 0, 292, { align: "center" });
 
-  doc
-    .fontSize(26)
-    .fillColor("#b91c3c")
-    .font("Helvetica-Bold")
-    .text(data.donorName, 0, 190, { align: "center" });
-
-  doc
-    .fontSize(13)
-    .fillColor("#55504b")
-    .font("Helvetica")
-    .text(
-      `for generously donating ${data.bloodGroup} blood on ${data.dateDonated} at ${data.hospitalName}, ` +
-        `directly contributing to saving a life.`,
-      120,
-      230,
-      { align: "center", width: pageWidth - 240 }
-    );
-
-  doc
-    .fontSize(10)
-    .fillColor("#8a847d")
-    .text(`Certificate ID: ${data.certificateId}`, 0, doc.page.height - 90, { align: "center" });
-
-  doc
-    .fontSize(10)
-    .fillColor("#8a847d")
-    .text("Issued by LifeLine Connect — Emergency Blood Donor & Volunteer Network", 0, doc.page.height - 75, {
-      align: "center",
-    });
+  doc.font("Helvetica").fontSize(9).fillColor("#8a847d").text(`Certificate ID: ${data.certificateId}`, 62, pageHeight - 74);
+  doc.font("Helvetica").fontSize(9).fillColor("#8a847d").text("LifeLine Connect | Emergency Blood Donor & Volunteer Network", 0, pageHeight - 74, { align: "center" });
+  doc.font("Helvetica-Bold").fontSize(9).fillColor("#8a847d").text("Verified contribution", pageWidth - 160, pageHeight - 74, { align: "right" });
 
   doc.end();
 }

@@ -8,9 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Auth.isLoggedIn()) {
       const user = Auth.getUser();
       const dashboardHref = user.role === "admin" ? "admin.html" : "dashboard.html";
+      const currentPage = window.location.pathname.split("/").pop() || "index.html";
+      const dashboardLink = currentPage === dashboardHref
+        ? ""
+        : `<a href="${dashboardHref}" class="btn btn-secondary">Dashboard</a>`;
       actions.innerHTML = `
-        <a href="${dashboardHref}" class="btn btn-secondary">Dashboard</a>
-        <button class="btn btn-primary" id="navLogoutBtn">Log out</button>
+        ${dashboardLink}
+        <button class="btn btn-secondary" id="navLogoutBtn">Log out</button>
       `;
       document.getElementById("navLogoutBtn").addEventListener("click", () => {
         Auth.clearSession();

@@ -46,7 +46,7 @@
       <div class="stat-strip" id="donorStatStrip" data-role="donor">
         <div class="stat-box"><div class="num" id="statPoints">0</div><div class="label">Points earned</div></div>
         <div class="stat-box"><div class="num" id="statBloodGroup">—</div><div class="label">Blood group</div></div>
-        <div class="stat-box"><div class="num" id="statAvailability">—</div><div class="label">Availability</div></div>
+        <div class="stat-box"><div class="num" id="statAvailability">—</div><div class="label">Current status</div></div>
         <div class="stat-box"><div class="num" id="statVerified">—</div><div class="label">Verification</div></div>
       </div>
 
@@ -60,7 +60,7 @@
           <strong>Available to donate</strong>
           <p style="margin:4px 0 0;">Turn this off if you've recently donated or can't be contacted right now.</p>
         </div>
-        <button class="btn btn-teal" id="toggleAvailabilityBtn">Toggle</button>
+        <button class="btn btn-secondary" id="toggleAvailabilityBtn">Mark unavailable</button>
       </div>
     </section>
 
@@ -144,9 +144,30 @@
   </main>
 </div>
 
+<div id="chatPanel" class="chat-panel" hidden>
+  <div class="chat-panel-head">
+    <strong>Private donation chat</strong>
+    <button type="button" class="chat-close" aria-label="Close chat">×</button>
+  </div>
+  <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+  <form id="chatForm" class="chat-form">
+    <label class="sr-only" for="chatInput">Message</label>
+    <input id="chatInput" maxlength="1000" placeholder="Write a message" required />
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <span>LifeLine Connect</span>
+    <span>Built with Node.js | Developer: CAPTAIN ENOK</span>
+  </div>
+</footer>
+
 <script src="js/api.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/effects.js"></script>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script src="js/dashboard.js"></script>
 </body>
 </html>

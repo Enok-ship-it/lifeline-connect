@@ -4,6 +4,8 @@
 // up the right actions depending on who's logged in.
 
 let currentUser = null;
+let chatSocket = null;
+let activeChatDonationId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
   Auth.requireLogin();
@@ -152,6 +154,7 @@ async function loadMyDonations() {
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
             <span class="badge ${d.status === "completed" ? "badge-verified" : "badge-blood"}">${d.status}</span>
+            ${d.contactRevealedAt ? `<button class="btn btn-secondary" data-chat-id="${d._id}">Open private chat</button>` : ""}
             ${d.status === "completed" ? `<button class="btn btn-secondary" data-cert-id="${d._id}">Download certificate</button>` : ""}
           </div>
         </div>`;
@@ -160,6 +163,9 @@ async function loadMyDonations() {
 
     list.querySelectorAll("[data-cert-id]").forEach((btn) => {
       btn.addEventListener("click", () => downloadCertificate(btn.dataset.certId, btn));
+    });
+    list.querySelectorAll("[data-chat-id]").forEach((btn) => {
+      btn.addEventListener("click", () => openDonationChat(btn.dataset.chatId));
     });
   } catch (err) {
     list.innerHTML = `<div class="empty-state">Couldn't load your donation history.</div>`;
@@ -285,11 +291,13 @@ async function togglePledges(requestId, btn) {
       <div class="list-row">
         <div>
           <div class="title">${escapeHtml(p.donor.name)} ${p.donor.verified ? `<span class="badge badge-verified">Verified</span>` : ""}</div>
-          <div class="meta">${escapeHtml(p.donor.bloodGroup)} · ${escapeHtml(p.donor.phone)} · pledged ${formatDate(p.createdAt)}</div>
+          <div class="meta">${escapeHtml(p.donor.bloodGroup)} · ${p.contactRevealedAt ? escapeHtml(p.donor.phone) : "Contact hidden until you accept"} · pledged ${formatDate(p.createdAt)}</div>
         </div>
         ${
           p.status === "pledged"
-            ? `<button class="btn btn-primary" data-complete-donation="${p._id}" data-request-id="${requestId}">Mark donation complete</button>`
+            ? `${p.requesterAccepted ? "" : `<button class="btn btn-secondary" data-accept-pledge="${p._id}" data-request-id="${requestId}">Accept pledge</button>`}
+              ${p.contactRevealedAt ? `<button class="btn btn-secondary" data-chat-id="${p._id}">Open private chat</button>` : ""}
+              <button class="btn btn-primary" data-complete-donation="${p._id}" data-request-id="${requestId}">Mark donation complete</button>`
             : `<span class="badge badge-verified">Completed</span>`
         }
       </div>`
@@ -301,9 +309,70 @@ async function togglePledges(requestId, btn) {
         markDonationComplete(completeBtn.dataset.requestId, completeBtn.dataset.completeDonation, completeBtn)
       );
     });
+    container.querySelectorAll("[data-accept-pledge]").forEach((acceptBtn) => {
+      acceptBtn.addEventListener("click", () => acceptPledge(acceptBtn.dataset.requestId, acceptBtn.dataset.acceptPledge, acceptBtn));
+    });
+    container.querySelectorAll("[data-chat-id]").forEach((chatBtn) => {
+      chatBtn.addEventListener("click", () => openDonationChat(chatBtn.dataset.chatId));
+    });
   } catch (err) {
     container.innerHTML = `<div class="empty-state">${escapeHtml(err.message)}</div>`;
   }
+
+  async function acceptPledge(requestId, donationId, btn) {
+    btn.disabled = true;
+    btn.textContent = "Accepting...";
+    try {
+      await apiRequest(`/requests/${requestId}/pledges/${donationId}/accept`, { method: "PATCH", auth: true });
+      showToast("Pledge accepted. Private contact and chat are now available.");
+      await loadRequesterOverview();
+    } catch (err) {
+      showToast(err.message);
+      btn.disabled = false;
+      btn.textContent = "Accept pledge";
+    }
+  }
+
+  function openDonationChat(donationId) {
+    if (!window.io) {
+      showToast("Chat is unavailable until the messaging client loads.");
+      return;
+    }
+    activeChatDonationId = donationId;
+    const panel = document.getElementById("chatPanel");
+    panel.hidden = false;
+    document.getElementById("chatMessages").innerHTML = `<div class="empty-state">Joining secure chat...</div>`;
+    chatSocket = chatSocket || window.io({ auth: { token: Auth.getToken() } });
+    chatSocket.emit("chat:join", { donationId }, (result) => {
+      if (!result.ok) {
+        document.getElementById("chatMessages").innerHTML = `<div class="empty-state">${escapeHtml(result.message)}</div>`;
+      } else {
+        document.getElementById("chatMessages").innerHTML = `<div class="empty-state">You are connected. Contact details are shared only with both participants.</div>`;
+      }
+    });
+    chatSocket.off("chat:message").on("chat:message", (message) => {
+      if (message.donationId !== activeChatDonationId) return;
+      const row = document.createElement("div");
+      row.className = "chat-message";
+      row.innerHTML = `<strong>${escapeHtml(message.senderName)}</strong><span>${escapeHtml(message.text)}</span>`;
+      document.getElementById("chatMessages").appendChild(row);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".chat-close")?.addEventListener("click", () => {
+      document.getElementById("chatPanel").hidden = true;
+    });
+    document.getElementById("chatForm")?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const input = document.getElementById("chatInput");
+      if (!chatSocket || !activeChatDonationId || !input.value.trim()) return;
+      chatSocket.emit("chat:message", { donationId: activeChatDonationId, text: input.value.trim() }, (result) => {
+        if (!result.ok) showToast(result.message);
+        else input.value = "";
+      });
+    });
+  });
 }
 
 async function markDonationComplete(requestId, donationId, btn) {

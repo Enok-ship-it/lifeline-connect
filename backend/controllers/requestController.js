@@ -117,6 +117,7 @@ async function pledgeToRequest(req, res) {
       donor: req.user._id,
       request: request._id,
       status: "pledged",
+      donorAccepted: true,
     });
 
     res.status(201).json({ message: "Pledge recorded. The requester will be notified.", donation });
@@ -133,8 +134,39 @@ async function pledgeToRequest(req, res) {
           `— LifeLine Connect`,
       }).catch((err) => console.error("Pledge notification failed:", err.message));
     }
+
   } catch (err) {
     res.status(500).json({ message: "Could not record pledge.", error: err.message });
+  }
+}
+
+// PATCH /api/requests/:id/pledges/:donationId/accept
+// The requester explicitly accepts a donor's pledge. Contact details and
+// chat remain private until both parties have accepted.
+async function acceptPledge(req, res) {
+  try {
+    const request = await Request.findById(req.params.id);
+    if (!request) return res.status(404).json({ message: "Request not found." });
+    if (String(request.requester) !== String(req.user._id)) {
+      return res.status(403).json({ message: "Only the requester can accept this pledge." });
+    }
+
+    const donation = await Donation.findOne({ _id: req.params.donationId, request: request._id });
+    if (!donation) return res.status(404).json({ message: "Donation pledge not found." });
+    donation.requesterAccepted = true;
+    if (donation.donorAccepted && donation.requesterAccepted) {
+      donation.contactRevealedAt = donation.contactRevealedAt || new Date();
+    }
+    await donation.save();
+
+    const donor = await User.findById(donation.donor).select("name phone email bloodGroup verified");
+    res.json({
+      message: "Pledge accepted. Contact details are now available to both participants.",
+      donation,
+      donor,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Could not accept pledge.", error: err.message });
   }
 }
 
@@ -150,10 +182,21 @@ async function getPledgesForRequest(req, res) {
     }
 
     const pledges = await Donation.find({ request: request._id })
-      .populate("donor", "name phone bloodGroup verified")
+      .populate("donor", "name bloodGroup verified")
       .sort({ createdAt: 1 });
 
-    res.json({ count: pledges.length, pledges });
+    const safePledges = await Promise.all(
+      pledges.map(async (pledge) => {
+        const item = pledge.toObject();
+        if (pledge.contactRevealedAt) {
+          const donor = await User.findById(pledge.donor._id).select("phone email");
+          item.donor = { ...item.donor, phone: donor?.phone, email: donor?.email };
+        }
+        return item;
+      })
+    );
+
+    res.json({ count: safePledges.length, pledges: safePledges });
   } catch (err) {
     res.status(500).json({ message: "Could not load pledges.", error: err.message });
   }
@@ -214,5 +257,6 @@ module.exports = {
   getRequest,
   pledgeToRequest,
   getPledgesForRequest,
+  acceptPledge,
   completeDonation,
 };

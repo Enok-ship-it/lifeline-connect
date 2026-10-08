@@ -15,6 +15,10 @@ const donationSchema = new mongoose.Schema(
       default: "pledged",
     },
 
+    donorAccepted: { type: Boolean, default: false },
+    requesterAccepted: { type: Boolean, default: false },
+    contactRevealedAt: { type: Date, default: null },
+
     unitsDonated: { type: Number, default: 1 },
     dateDonated: { type: Date, default: null }, // filled in when marked completed
   },

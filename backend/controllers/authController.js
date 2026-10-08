@@ -49,11 +49,12 @@ async function register(req, res) {
     // balances security against speed.
     const passwordHash = await bcrypt.hash(password, 10);
 
+    const safeRole = role === "requester" ? "requester" : "donor";
     const user = await User.create({
       name,
       email: email.toLowerCase(),
       passwordHash,
-      role: role || "donor",
+      role: safeRole,
       bloodGroup,
       phone,
       city,
