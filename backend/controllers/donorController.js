@@ -17,10 +17,8 @@ const COMPATIBLE_DONORS = {
 };
 
 // GET /api/donors/search?bloodGroup=A+&city=Pune&lat=..&lng=..
-// Uses `softAuth` - works for anyone, but includes each donor's phone
-// number only if the person searching happens to be logged in. This
-// keeps contact details from being scraped by anonymous visitors while
-// still letting anyone browse who's available.
+// Contact details are never included in public search results. They are
+// revealed only through an accepted donation pledge.
 async function searchDonors(req, res) {
   try {
     const { bloodGroup, city, lat, lng } = req.query;
@@ -40,10 +38,7 @@ async function searchDonors(req, res) {
       query.city = new RegExp(city, "i");
     }
 
-    // Only reveal contact info to signed-in visitors - anonymous browsers
-    // see everything except phone numbers.
-    const fieldsToHide = req.user ? "-passwordHash" : "-passwordHash -phone -email";
-    let donors = await User.find(query).select(fieldsToHide);
+    let donors = await User.find(query).select("-passwordHash -phone -email");
 
     // If the requester shared coordinates, sort donors by real distance.
     // Otherwise we just leave them in whatever order MongoDB returned.

@@ -36,6 +36,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const loginForm = document.getElementById("loginForm");
   if (loginForm) loginForm.addEventListener("submit", handleLogin);
+
+  document.querySelectorAll(".password-toggle").forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const input = toggle.parentElement.querySelector("input");
+      const isVisible = input.type === "text";
+      input.type = isVisible ? "password" : "text";
+      toggle.textContent = isVisible ? "Show" : "Hide";
+      toggle.setAttribute("aria-label", isVisible ? "Show password" : "Hide password");
+      toggle.setAttribute("aria-pressed", String(!isVisible));
+    });
+  });
 });
 
 async function handleRegister(e) {

@@ -43,6 +43,13 @@ function restrictTo(...allowedRoles) {
   };
 }
 
+function requireVerified(req, res, next) {
+  if (req.user.role !== "admin" && !req.user.verified) {
+    return res.status(403).json({ message: "Your account must be verified by an administrator first." });
+  }
+  next();
+}
+
 // softAuth: for routes that work for EVERYONE (like public donor search)
 // but should show a bit more detail (like a phone number) to people who
 // happen to be logged in. Unlike `protect`, this never blocks the
@@ -64,4 +71,4 @@ async function softAuth(req, res, next) {
   next();
 }
 
-module.exports = { protect, restrictTo, softAuth };
+module.exports = { protect, restrictTo, requireVerified, softAuth };

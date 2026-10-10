@@ -17,6 +17,7 @@
       <li><a href="search.html">Find donors</a></li>
       <li><a href="#events">Events</a></li>
       <li><a href="#leaderboard">Top donors</a></li>
+      <li><a href="animals.html">Stray animal support</a></li>
     </ul>
     <div class="nav-actions">
       <a href="login.html" class="btn btn-secondary">Log in</a>
@@ -64,7 +65,7 @@
              the group below is continuously translated left by exactly one
              copy's width, so copy #2 slides into copy #1's old position at
              the exact moment copy #1 slides out - a seamless, infinite loop. -->
-        <g class="pulse-track">
+        <g class="heartbeat-line">
           <path class="pulse-path" d="M0 45 H100 L115 15 L135 75 L150 45 L165 60 L180 45 H320" />
           <path class="pulse-path" d="M0 45 H100 L115 15 L135 75 L150 45 L165 60 L180 45 H320" transform="translate(320,0)" />
         </g>
@@ -136,13 +137,16 @@
         <a href="search.html" class="btn btn-teal" style="margin-top:8px;">Try the search</a>
       </div>
       <div class="feature-visual tilt">
-        <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
-          <circle cx="90" cy="70" r="8" fill="#B91C3C"/>
-          <circle cx="90" cy="70" r="30" stroke="#B91C3C" stroke-width="1.5" opacity="0.4"/>
-          <circle cx="90" cy="70" r="55" stroke="#B91C3C" stroke-width="1.5" opacity="0.25"/>
-          <circle cx="55" cy="45" r="5" fill="#146356"/>
-          <circle cx="128" cy="95" r="5" fill="#146356"/>
-          <circle cx="120" cy="35" r="5" fill="#146356"/>
+        <svg class="orbit-system" width="220" height="180" viewBox="0 0 180 140" fill="none" aria-label="Nearby donor search visualization" role="img">
+          <circle class="orbit-ring" cx="90" cy="70" r="18"/>
+          <circle class="orbit-ring" cx="90" cy="70" r="32"/>
+          <circle class="orbit-ring" cx="90" cy="70" r="46"/>
+          <circle class="orbit-ring" cx="90" cy="70" r="60"/>
+          <circle class="orbit-sun" cx="90" cy="70" r="8"/>
+          <g class="planet-orbit planet-orbit-1"><circle cx="108" cy="70" r="4.5"/></g>
+          <g class="planet-orbit planet-orbit-2"><circle cx="122" cy="70" r="4.5"/></g>
+          <g class="planet-orbit planet-orbit-3"><circle cx="136" cy="70" r="4.5"/></g>
+          <g class="planet-orbit planet-orbit-4"><circle cx="150" cy="70" r="4.5"/></g>
         </svg>
       </div>
     </div>
@@ -157,8 +161,42 @@
         </p>
       </div>
       <div class="feature-visual tilt">
-        <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
-          <path d="M90 20 C60 55 45 75 45 95 A45 45 0 1 0 135 95 C135 75 120 55 90 20Z" fill="#EDE4D8" stroke="#B91C3C" stroke-width="2"/>
+        <svg class="compatibility-drops" width="240" height="180" viewBox="0 0 260 180" fill="none" aria-label="Blood group compatibility examples" role="img">
+          <defs>
+            <linearGradient id="bloodDropRed" x1="28" y1="12" x2="78" y2="120" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF7A88"/>
+              <stop offset="0.32" stop-color="#D72D4C"/>
+              <stop offset="1" stop-color="#670F26"/>
+            </linearGradient>
+            <linearGradient id="bloodDropCrimson" x1="28" y1="12" x2="78" y2="120" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF9AA5"/>
+              <stop offset="0.35" stop-color="#B91C3C"/>
+              <stop offset="1" stop-color="#4C0C1B"/>
+            </linearGradient>
+            <filter id="bloodDropShadow" x="-40%" y="-30%" width="180%" height="190%">
+              <feDropShadow dx="0" dy="8" stdDeviation="5" flood-color="#8F1530" flood-opacity="0.3"/>
+            </filter>
+          </defs>
+          <g transform="translate(6 20)" filter="url(#bloodDropShadow)"><g class="blood-drop blood-drop-o">
+            <path d="M47 0C28 27 8 47 8 72a39 39 0 0 0 78 0C86 47 66 27 47 0Z" fill="url(#bloodDropRed)" stroke="#650D24" stroke-width="2"/>
+            <path d="M28 43c-7 12-9 22-7 30" stroke="#FFFDFB" stroke-width="4" stroke-linecap="round" opacity=".48"/>
+            <text x="47" y="83" text-anchor="middle" fill="#FFFDFB" font-size="22" font-family="Manrope, sans-serif" font-weight="800">O-</text>
+          </g></g>
+          <g transform="translate(76 2) scale(.82)" filter="url(#bloodDropShadow)"><g class="blood-drop blood-drop-b">
+            <path d="M47 0C28 27 8 47 8 72a39 39 0 0 0 78 0C86 47 66 27 47 0Z" fill="url(#bloodDropCrimson)" stroke="#650D24" stroke-width="2"/>
+            <path d="M28 43c-7 12-9 22-7 30" stroke="#FFFDFB" stroke-width="4" stroke-linecap="round" opacity=".48"/>
+            <text x="47" y="83" text-anchor="middle" fill="#FFFDFB" font-size="22" font-family="Manrope, sans-serif" font-weight="800">B+</text>
+          </g></g>
+          <g transform="translate(142 30) scale(.72)" filter="url(#bloodDropShadow)"><g class="blood-drop blood-drop-a">
+            <path d="M47 0C28 27 8 47 8 72a39 39 0 0 0 78 0C86 47 66 27 47 0Z" fill="url(#bloodDropRed)" stroke="#650D24" stroke-width="2"/>
+            <path d="M28 43c-7 12-9 22-7 30" stroke="#FFFDFB" stroke-width="4" stroke-linecap="round" opacity=".48"/>
+            <text x="47" y="83" text-anchor="middle" fill="#FFFDFB" font-size="22" font-family="Manrope, sans-serif" font-weight="800">A+</text>
+          </g></g>
+          <g transform="translate(84 98) scale(.58)" filter="url(#bloodDropShadow)"><g class="blood-drop blood-drop-ab">
+            <path d="M47 0C28 27 8 47 8 72a39 39 0 0 0 78 0C86 47 66 27 47 0Z" fill="url(#bloodDropCrimson)" stroke="#650D24" stroke-width="2"/>
+            <path d="M28 43c-7 12-9 22-7 30" stroke="#FFFDFB" stroke-width="4" stroke-linecap="round" opacity=".48"/>
+            <text x="47" y="83" text-anchor="middle" fill="#FFFDFB" font-size="22" font-family="Manrope, sans-serif" font-weight="800">AB+</text>
+          </g></g>
         </svg>
       </div>
     </div>
@@ -213,7 +251,7 @@
 <footer class="footer">
   <div class="container">
     <span>LifeLine Connect — a student project for social good.</span>
-    <span>Built with Node.js, Express &amp; MongoDB.</span>
+    <span>Built with Node.js | Developer: CAPTAIN ENOK</span>
   </div>
 </footer>
 

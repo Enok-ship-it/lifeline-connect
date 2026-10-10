@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupScrollReveal();
   setupTilt();
   setupParticles();
+  setupPageTransitions();
 });
 
 // ---------- 1. Scroll reveal ----------
@@ -22,6 +23,21 @@ function setupScrollReveal() {
     // Very old browser fallback - just show everything immediately.
     targets.forEach((el) => el.classList.add("is-visible"));
     return;
+  }
+
+  function setupPageTransitions() {
+    if (!document.startViewTransition) return;
+    document.querySelectorAll('a[href$=".html"], a[href^="./"]').forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const url = new URL(link.href, window.location.href);
+        if (url.origin !== window.location.origin) return;
+        event.preventDefault();
+        document.startViewTransition(() => {
+          window.location.href = url.href;
+        });
+      });
+    });
   }
 
   const observer = new IntersectionObserver(

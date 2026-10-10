@@ -4,6 +4,7 @@
 
 require("dotenv").config();
 const express = require("express");
+const http = require("http");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -16,8 +17,17 @@ const requestRoutes = require("./routes/requestRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const donationRoutes = require("./routes/donationRoutes");
+const jwt = require("jsonwebtoken");
+const { Server: SocketIOServer } = require("socket.io");
+const Donation = require("./models/Donation");
+const Request = require("./models/Request");
+const User = require("./models/User");
 
 const app = express();
+const httpServer = http.createServer(app);
+const io = new SocketIOServer(httpServer, {
+  cors: { origin: process.env.CLIENT_ORIGIN || true },
+});
 
 // ---- Middleware (runs on every request, in order) ----
 // helmet sets a batch of security-related HTTP headers (e.g. stops the
@@ -60,6 +70,65 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", time: new Date().toISOString() });
 });
 
+// Socket authentication and room authorization keep chat private. A room is
+// available only after both participants explicitly accept the donation.
+io.use(async (socket, next) => {
+  try {
+    const token = socket.handshake.auth?.token;
+    if (!token) return next(new Error("Authentication required."));
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+    if (!user) return next(new Error("Account not found."));
+    socket.user = user;
+    next();
+  } catch (err) {
+    next(new Error("Session expired or invalid."));
+  }
+});
+
+io.on("connection", (socket) => {
+  socket.on("chat:join", async ({ donationId } = {}, ack = () => {}) => {
+    try {
+      const donation = await Donation.findById(donationId).select(
+        "donor request donorAccepted requesterAccepted contactRevealedAt"
+      );
+      if (!donation || !donation.contactRevealedAt || !donation.donorAccepted || !donation.requesterAccepted) {
+        return ack({ ok: false, message: "Chat is available only after both participants accept the donation." });
+      }
+
+      const request = await Request.findById(donation.request).select("requester");
+      const isParticipant =
+        String(socket.user._id) === String(donation.donor) ||
+        String(socket.user._id) === String(request?.requester);
+      if (!isParticipant) return ack({ ok: false, message: "You are not a participant in this donation." });
+
+      socket.join(`donation:${donationId}`);
+      ack({ ok: true, room: `donation:${donationId}` });
+    } catch (err) {
+      ack({ ok: false, message: "Could not join chat." });
+    }
+  });
+
+  socket.on("chat:message", ({ donationId, text } = {}, ack = () => {}) => {
+    const message = String(text || "").trim();
+    if (!message || message.length > 1000) {
+      return ack({ ok: false, message: "Message must be between 1 and 1000 characters." });
+    }
+
+    const room = `donation:${donationId}`;
+    if (!socket.rooms.has(room)) return ack({ ok: false, message: "Join an approved donation chat first." });
+
+    io.to(room).emit("chat:message", {
+      donationId,
+      senderId: String(socket.user._id),
+      senderName: socket.user.name,
+      text: message,
+      sentAt: new Date().toISOString(),
+    });
+    ack({ ok: true });
+  });
+});
+
 // ---- Catch-all error handler ----
 // If any route throws an unexpected error we didn't already catch,
 // this stops the server from crashing and sends a clean response instead.
@@ -70,7 +139,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 connectDB().then(() => {
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`LifeLine Connect server running at http://localhost:${PORT}`);
   });
 });
